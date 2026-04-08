@@ -6,7 +6,7 @@ interface StudentProfile extends PunchRecord {
 
 const students: StudentProfile[] = [
   // Division K - Automation & Robotics
-  { studentId: "SF001", name: "Aditya", email: "krishwebsite2000@gmail.com", rollNo: "", division: "K", branch: "Automation & Robotics", year: 1, punchTime: "08:05am" },
+  { studentId: "SF001", name: "Aditya", email: "krish@gmail.com", rollNo: "", division: "K", branch: "Automation & Robotics", year: 1, punchTime: "08:05am" },
   { studentId: "SF002", name: "Prachi", email: "prachi@example.com", rollNo: "", division: "K", branch: "Automation & Robotics", year: 1, punchTime: "08:12am" },
   { studentId: "SF009", name: "Riya", email: "riya@example.com", rollNo: "", division: "K", branch: "Automation & Robotics", year: 1, punchTime: "08:20am" },
 
