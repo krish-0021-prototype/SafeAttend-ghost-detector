@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SafeAttend Ghost Detector
 
-## Getting Started
+A Next.js dashboard for Sandip Foundation that identifies "ghost students" — students who punched in but missed lectures. Features generated email alerts and real-time filtering for HODs and class teachers.
 
-First, run the development server:
+## Quick Start
+
+```bash
+npm install
+```
+
+Create `.env.local`:
+```env
+RESEND_API_KEY=re_your_key_here
+FROM_EMAIL=onboarding@resend.dev  # For testing; change to your domain for production
+```
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## IT Team Integration
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Replace these 2 mock functions in `src/lib/mock-data.ts` with your ERP API calls:
 
-## Learn More
+### 1. `getPunchData(date)`
+**Current:** Returns mock punch records.  
+**Replace with:** Your ERP endpoint that returns students who punched in today.
 
-To learn more about Next.js, take a look at the following resources:
+```typescript
+// Expected return type: PunchRecord[]
+interface PunchRecord {
+  studentId: string;
+  name: string;
+  rollNo: string;
+  division: string;
+  branch: string;
+  year: number;
+  punchTime: string;
+}
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 2. `getLectureData(date)`
+**Current:** Returns mock lecture attendance  
+**Replace with:** Your ERP endpoint that returns lecture attendance records
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```typescript
+// Expected return type: LectureRecord[]
+interface LectureRecord {
+  studentId: string;
+  name: string;
+  rollNo: string;
+  division: string;
+  branch: string;
+  year: number;
+  subjects: {
+    subjectName: string;
+    subjectCode: string;
+    status: "P" | "A" | "-";  // Present, Absent, No Class
+  }[];
+}
+```
 
-## Deploy on Vercel
+Both functions receive `date` parameter formatted as `YYYY-MM-DD`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Ghost Detection:** Automatically flags students with punch-in but lecture absences
+- **HOD Dashboard:** Division/Branch filters with summary cards
+- **Class Teacher View:** Toggle between "All Students" and "Ghosts Only"
+- **Bulk Actions:** Notify all ghost students with live processing log
+
+## Tech Stack
+
+- Next.js 14 (App Router)
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+- Resend (Email)
+- Template-based Notifications 
